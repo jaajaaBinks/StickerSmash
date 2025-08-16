@@ -11,6 +11,7 @@ import EmojiPicker from "@/components/EmojiPicker";
 import EmojiSticker from '@/components/EmojiSticker';
 import IconButton from "@/components/IconButton";
 import ImageViewer from "@/components/ImageViewer";
+import { captureRef } from 'react-native-view-shot';
 
 const PlaceHolderImage = require("@/assets/images/background-image.png");
 
@@ -56,7 +57,19 @@ export default function Index() {
   };
 
   const onSaveImageAsync = async () => {
-    // TODO
+    try {
+      const localUri = await captureRef(imageRef, {
+        height: 440,
+        quality: 1,
+      });
+
+      await MediaLibrary.saveToLibraryAsync(localUri);
+      if (localUri) {
+        alert('Saved!');
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
